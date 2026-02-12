@@ -1,16 +1,13 @@
 import type { MetForecastResponse } from '$lib/types/api.js';
 import type { WeatherPoint } from '$lib/types/domain.js';
 
-const BASE = 'https://api.met.no/weatherapi/locationforecast/2.0';
-
-// MET Norway requires a User-Agent header identifying the application
-const USER_AGENT = 'Nordlys/0.1 github.com/nordlys-aurora';
+const BASE = import.meta.env.DEV
+	? '/api/met/weatherapi/locationforecast/2.0'
+	: 'https://api.met.no/weatherapi/locationforecast/2.0';
 
 export async function fetchWeather(lat: number, lon: number): Promise<WeatherPoint[]> {
 	const url = `${BASE}/compact?lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}`;
-	const res = await fetch(url, {
-		headers: { 'User-Agent': USER_AGENT }
-	});
+	const res = await fetch(url);
 
 	if (!res.ok) throw new Error(`MET Norway API error: ${res.status} ${res.statusText}`);
 

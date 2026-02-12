@@ -4,6 +4,18 @@ import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	server: {
+		proxy: {
+			'/api/met': {
+				target: 'https://api.met.no',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api\/met/, ''),
+				headers: {
+					'User-Agent': 'Nordlys/0.1 github.com/nordlys-aurora'
+				}
+			}
+		}
+	},
 	plugins: [
 		tailwindcss(),
 		sveltekit(),

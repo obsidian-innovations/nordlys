@@ -25,17 +25,15 @@
 	{/snippet}
 
 	<Popup offset={12}>
-		{#snippet content()}
-			<div class="min-w-[180px] rounded-lg bg-night-800 p-3 text-snow-100 shadow-xl">
-				<h3 class="font-semibold">{spot.name}</h3>
-				<p class="mt-1 text-xs text-snow-300">{spot.description}</p>
-				<div class="mt-2 flex items-center gap-2 text-xs">
-					<span class="rounded-full px-2 py-0.5 {lightColor[spot.lightPollution]} text-night-900">
-						{spot.lightPollution} light
-					</span>
-				</div>
-				<p class="mt-1 text-xs text-snow-300">{spot.access}</p>
+		<div class="min-w-[180px] rounded-lg bg-night-800 p-3 text-snow-100 shadow-xl">
+			<h3 class="font-semibold">{spot.name}</h3>
+			<p class="mt-1 text-xs text-snow-300">{spot.description}</p>
+			<div class="mt-2 flex items-center gap-2 text-xs">
+				<span class="rounded-full px-2 py-0.5 {lightColor[spot.lightPollution]} text-night-900">
+					{spot.lightPollution} light
+				</span>
 			</div>
-		{/snippet}
+			<p class="mt-1 text-xs text-snow-300">{spot.access}</p>
+		</div>
 	</Popup>
 </Marker>
