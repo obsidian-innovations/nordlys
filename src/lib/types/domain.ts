@@ -52,7 +52,7 @@ export interface UserSettings {
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
-	mapTilerKey: '',
+	mapTilerKey: import.meta.env.VITE_MAPTILER_KEY ?? '',
 	notificationsEnabled: false,
 	kpThreshold: 3,
 	favoriteSpotIds: []
