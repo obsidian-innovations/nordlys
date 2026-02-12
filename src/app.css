@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+@theme {
+	/* Aurora palette */
+	--color-aurora-green: #00e676;
+	--color-aurora-teal: #00bfa5;
+	--color-aurora-purple: #b388ff;
+	--color-aurora-pink: #f06292;
+	--color-aurora-blue: #448aff;
+
+	/* Dark background shades */
+	--color-night-950: #04060d;
+	--color-night-900: #0a0e1a;
+	--color-night-800: #111627;
+	--color-night-700: #1a2035;
+	--color-night-600: #252d44;
+	--color-night-500: #374160;
+
+	/* Text */
+	--color-snow-50: #f8fafc;
+	--color-snow-100: #e2e8f0;
+	--color-snow-200: #cbd5e1;
+	--color-snow-300: #94a3b8;
+
+	/* Score verdict colors */
+	--color-score-none: #64748b;
+	--color-score-unlikely: #94a3b8;
+	--color-score-possible: #fbbf24;
+	--color-score-likely: #00e676;
+	--color-score-high: #b388ff;
+	--color-score-storm: #f06292;
+
+	/* Fonts */
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html {
+	color-scheme: dark;
+}
+
+body {
+	@apply bg-night-900 text-snow-100 font-sans antialiased;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Safe area insets for mobile */
+:root {
+	--safe-area-top: env(safe-area-inset-top, 0px);
+	--safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}

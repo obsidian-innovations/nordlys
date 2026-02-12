@@ -1,0 +1,182 @@
+[
+	{
+		"id": "ersfjordbotn",
+		"name": "Ersfjordbotn",
+		"lat": 69.6488,
+		"lon": 18.5667,
+		"description": "Sheltered fjord beach with wide northern horizon. One of the most popular spots near Tromsø.",
+		"lightPollution": "low",
+		"access": "25 min drive from Tromsø center, parking at beach"
+	},
+	{
+		"id": "sommaroy",
+		"name": "Sommarøy",
+		"lat": 69.6333,
+		"lon": 18.0167,
+		"description": "Scenic island with white sand beaches and minimal light pollution.",
+		"lightPollution": "low",
+		"access": "50 min drive from Tromsø, bridge-connected island"
+	},
+	{
+		"id": "kvaloya-rekvik",
+		"name": "Rekvik, Kvaløya",
+		"lat": 69.7500,
+		"lon": 18.4667,
+		"description": "Remote fishing village on Kvaløya's north coast. Very dark skies.",
+		"lightPollution": "low",
+		"access": "40 min drive from Tromsø, paved road"
+	},
+	{
+		"id": "telegrafbukta",
+		"name": "Telegrafbukta",
+		"lat": 69.6278,
+		"lon": 19.0028,
+		"description": "City beach on Tromsø island's southern tip. Convenient but some light pollution.",
+		"lightPollution": "high",
+		"access": "15 min walk from city center"
+	},
+	{
+		"id": "prestvannet",
+		"name": "Prestvannet Lake",
+		"lat": 69.6614,
+		"lon": 18.9536,
+		"description": "Hilltop lake with panoramic views. Easy walk from city center.",
+		"lightPollution": "medium",
+		"access": "20 min walk uphill from Tromsø center"
+	},
+	{
+		"id": "grotfjord",
+		"name": "Grøtfjord",
+		"lat": 69.7167,
+		"lon": 18.4000,
+		"description": "Dramatic fjord setting with mountains on both sides. Excellent dark sky location.",
+		"lightPollution": "low",
+		"access": "35 min drive from Tromsø center"
+	},
+	{
+		"id": "haldde",
+		"name": "Haldde Observatory",
+		"lat": 69.9667,
+		"lon": 23.2667,
+		"description": "Historic aurora observatory. Worth the detour for aurora enthusiasts.",
+		"lightPollution": "low",
+		"access": "4h drive from Tromsø, near Alta"
+	},
+	{
+		"id": "tromvik",
+		"name": "Tromvik",
+		"lat": 69.7500,
+		"lon": 18.3333,
+		"description": "Small fishing village at the end of the road on Kvaløya. Very dark, wide horizon.",
+		"lightPollution": "low",
+		"access": "45 min drive from Tromsø center"
+	},
+	{
+		"id": "kaldfjord",
+		"name": "Kaldfjord",
+		"lat": 69.7000,
+		"lon": 18.7833,
+		"description": "Fjord village on Kvaløya's east side. Protected from city lights by mountains.",
+		"lightPollution": "low",
+		"access": "20 min drive from Tromsø center"
+	},
+	{
+		"id": "brensholmen",
+		"name": "Brensholmen",
+		"lat": 69.5833,
+		"lon": 17.9500,
+		"description": "Ferry terminal area with wide ocean views. Great for clear northern horizon.",
+		"lightPollution": "low",
+		"access": "55 min drive from Tromsø, whale watching area"
+	},
+	{
+		"id": "floya",
+		"name": "Fjellheisen / Fløya",
+		"lat": 69.6444,
+		"lon": 19.0472,
+		"description": "Cable car viewpoint 421m above Tromsø. Panoramic 360° views but exposed to wind.",
+		"lightPollution": "medium",
+		"access": "Cable car from city center, or 2h hike"
+	},
+	{
+		"id": "senja-husoy",
+		"name": "Husøy, Senja",
+		"lat": 69.3833,
+		"lon": 17.0167,
+		"description": "Picturesque fishing village on Senja island. Dramatic mountain backdrop.",
+		"lightPollution": "low",
+		"access": "2.5h drive from Tromsø"
+	},
+	{
+		"id": "skibotn",
+		"name": "Skibotn",
+		"lat": 69.3500,
+		"lon": 20.2333,
+		"description": "Inner fjord location with very stable clear weather. Home to aurora observatory.",
+		"lightPollution": "low",
+		"access": "1.5h drive from Tromsø, often clearer weather"
+	},
+	{
+		"id": "lyngen",
+		"name": "Lyngen",
+		"lat": 69.5667,
+		"lon": 20.2000,
+		"description": "Fjord valley backed by the Lyngen Alps. Rain shadow means less cloud cover.",
+		"lightPollution": "low",
+		"access": "1.5h drive from Tromsø"
+	},
+	{
+		"id": "vengsoya",
+		"name": "Vengsøya",
+		"lat": 69.7333,
+		"lon": 18.8667,
+		"description": "Small island north of Kvaløya accessible by passenger ferry. Incredibly dark.",
+		"lightPollution": "low",
+		"access": "Passenger ferry from Tromsø (check schedule)"
+	},
+	{
+		"id": "sandnessund",
+		"name": "Sandnessund Bridge Area",
+		"lat": 69.6722,
+		"lon": 18.8833,
+		"description": "Bridge crossing to Kvaløya. Pull-off areas with decent northern views.",
+		"lightPollution": "medium",
+		"access": "10 min drive from Tromsø center"
+	},
+	{
+		"id": "nordkjosbotn",
+		"name": "Nordkjosbotn",
+		"lat": 69.2167,
+		"lon": 19.5333,
+		"description": "Junction town at head of Balsfjord. Often clearer than coastal Tromsø.",
+		"lightPollution": "low",
+		"access": "1h drive from Tromsø"
+	},
+	{
+		"id": "arctic-cathedral",
+		"name": "Arctic Cathedral Area",
+		"lat": 69.6508,
+		"lon": 19.0486,
+		"description": "Mainland side near the Arctic Cathedral. Quick access from city with some city glow.",
+		"lightPollution": "high",
+		"access": "5 min drive from city center, across the bridge"
+	},
+	{
+		"id": "hella-kvaloya",
+		"name": "Hella, Kvaløya",
+		"lat": 69.6833,
+		"lon": 18.6500,
+		"description": "Quiet area on Kvaløya's southwest coast with good northern exposure.",
+		"lightPollution": "low",
+		"access": "30 min drive from Tromsø"
+	},
+	{
+		"id": "strand",
+		"name": "Strand",
+		"lat": 69.7167,
+		"lon": 18.9000,
+		"description": "Mainland area north of Tromsø bridge. Mountain backdrop blocks some city light.",
+		"lightPollution": "medium",
+		"access": "15 min drive from Tromsø center"
+	}
+]
