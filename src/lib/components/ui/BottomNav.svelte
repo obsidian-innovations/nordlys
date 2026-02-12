@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { base } from '$app/paths';
 
 	const navItems = [
 		{ href: '/', label: 'Forecast', icon: 'forecast' },
@@ -9,8 +10,9 @@
 	] as const;
 
 	function isActive(href: string): boolean {
-		if (href === '/') return page.url.pathname === '/';
-		return page.url.pathname.startsWith(href);
+		const fullPath = base + href;
+		if (href === '/') return page.url.pathname === base || page.url.pathname === base + '/';
+		return page.url.pathname.startsWith(fullPath);
 	}
 </script>
 
@@ -22,7 +24,7 @@
 		{#each navItems as item}
 			{@const active = isActive(item.href)}
 			<a
-				href={item.href}
+				href="{base}{item.href}"
 				class="flex flex-col items-center gap-0.5 px-3 py-1 text-xs transition-colors {active
 					? 'text-aurora-green'
 					: 'text-snow-300 hover:text-snow-100'}"
