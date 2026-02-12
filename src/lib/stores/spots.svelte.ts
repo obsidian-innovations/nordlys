@@ -1,3 +1,4 @@
+import { base } from '$app/paths';
 import { persistedState } from 'svelte-persisted-state';
 import type { ViewingSpot } from '$lib/types/domain.js';
 
@@ -13,7 +14,7 @@ export function getSpotsStore() {
 
 		async loadCurated() {
 			try {
-				const res = await fetch('/viewing-spots.json');
+				const res = await fetch(`${base}/viewing-spots.json`);
 				curatedSpots = await res.json();
 			} catch {
 				// Will use empty array if offline and not cached
