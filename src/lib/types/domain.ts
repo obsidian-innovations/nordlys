@@ -44,11 +44,18 @@ export interface ViewingSpot {
 	userAdded?: boolean;
 }
 
+export interface UserLocation {
+	lat: number;
+	lon: number;
+	name: string;
+}
+
 export interface UserSettings {
 	mapTilerKey: string;
 	notificationsEnabled: boolean;
 	kpThreshold: number; // minimum KP to show alert
 	favoriteSpotIds: string[];
+	location?: UserLocation;
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {

@@ -1,7 +1,8 @@
-import { fetchKpIndex, fetchKpForecast, fetchSolarWind, latestKp, latestBz } from '$lib/services/noaa.js';
+import { fetchKpIndex, fetchKpForecast, fetchSolarWind, fetchOvation, latestKp, latestBz } from '$lib/services/noaa.js';
 import { fetchWeather, weatherAt } from '$lib/services/met-norway.js';
 import { calculateAuroraScore } from '$lib/services/aurora.js';
 import type { KpReading, SolarWind, WeatherPoint, AuroraScore } from '$lib/types/domain.js';
+import type { NoaaOvationResponse } from '$lib/types/api.js';
 
 const TROMSO_LAT = 69.6492;
 const TROMSO_LON = 18.9553;
@@ -11,6 +12,7 @@ let kpForecast = $state<KpReading[]>([]);
 let solarWind = $state<SolarWind[]>([]);
 let weather = $state<WeatherPoint[]>([]);
 let score = $state<AuroraScore | null>(null);
+let ovation = $state<NoaaOvationResponse | null>(null);
 let loading = $state(false);
 let lastUpdated = $state<Date | null>(null);
 let error = $state<string | null>(null);
@@ -34,19 +36,24 @@ async function refresh() {
 			fetchKpIndex(),
 			fetchKpForecast(),
 			fetchSolarWind(),
-			fetchWeather(TROMSO_LAT, TROMSO_LON)
+			fetchWeather(TROMSO_LAT, TROMSO_LON),
+			fetchOvation()
 		]);
 
 		if (results[0].status === 'fulfilled') kpReadings = results[0].value;
 		if (results[1].status === 'fulfilled') kpForecast = results[1].value;
 		if (results[2].status === 'fulfilled') solarWind = results[2].value;
 		if (results[3].status === 'fulfilled') weather = results[3].value;
+		if (results[4].status === 'fulfilled') ovation = results[4].value;
 
-		const failed = results.filter((r) => r.status === 'rejected');
-		if (failed.length === results.length) {
+		const sourceNames = ['Kp index', 'Kp forecast', 'solar wind', 'weather', 'ovation'];
+		const failedNames = results
+			.map((r, i) => (r.status === 'rejected' ? sourceNames[i] : null))
+			.filter(Boolean);
+		if (failedNames.length === results.length) {
 			error = 'All data sources unavailable. Check your connection.';
-		} else if (failed.length > 0) {
-			error = `${failed.length} data source(s) unavailable. Some data may be stale.`;
+		} else if (failedNames.length > 0) {
+			error = `Could not fetch ${failedNames.join(', ')}. Showing cached data.`;
 		}
 
 		recalculateScore();
@@ -68,6 +75,7 @@ export function getForecastStore() {
 		get loading() { return loading; },
 		get lastUpdated() { return lastUpdated; },
 		get error() { return error; },
+		get ovation() { return ovation; },
 		refresh
 	};
 }
