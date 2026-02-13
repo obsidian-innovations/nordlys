@@ -20,7 +20,7 @@
 	{
 		"id": "kvaloya-rekvik",
 		"name": "Rekvik, Kvaløya",
-		"lat": 69.7500,
+		"lat": 69.75,
 		"lon": 18.4667,
 		"description": "Remote fishing village on Kvaløya's north coast. Very dark skies.",
 		"lightPollution": "low",
@@ -48,7 +48,7 @@
 		"id": "grotfjord",
 		"name": "Grøtfjord",
 		"lat": 69.7167,
-		"lon": 18.4000,
+		"lon": 18.4,
 		"description": "Dramatic fjord setting with mountains on both sides. Excellent dark sky location.",
 		"lightPollution": "low",
 		"access": "35 min drive from Tromsø center"
@@ -65,7 +65,7 @@
 	{
 		"id": "tromvik",
 		"name": "Tromvik",
-		"lat": 69.7500,
+		"lat": 69.75,
 		"lon": 18.3333,
 		"description": "Small fishing village at the end of the road on Kvaløya. Very dark, wide horizon.",
 		"lightPollution": "low",
@@ -74,7 +74,7 @@
 	{
 		"id": "kaldfjord",
 		"name": "Kaldfjord",
-		"lat": 69.7000,
+		"lat": 69.7,
 		"lon": 18.7833,
 		"description": "Fjord village on Kvaløya's east side. Protected from city lights by mountains.",
 		"lightPollution": "low",
@@ -84,7 +84,7 @@
 		"id": "brensholmen",
 		"name": "Brensholmen",
 		"lat": 69.5833,
-		"lon": 17.9500,
+		"lon": 17.95,
 		"description": "Ferry terminal area with wide ocean views. Great for clear northern horizon.",
 		"lightPollution": "low",
 		"access": "55 min drive from Tromsø, whale watching area"
@@ -110,7 +110,7 @@
 	{
 		"id": "skibotn",
 		"name": "Skibotn",
-		"lat": 69.3500,
+		"lat": 69.35,
 		"lon": 20.2333,
 		"description": "Inner fjord location with very stable clear weather. Home to aurora observatory.",
 		"lightPollution": "low",
@@ -120,7 +120,7 @@
 		"id": "lyngen",
 		"name": "Lyngen",
 		"lat": 69.5667,
-		"lon": 20.2000,
+		"lon": 20.2,
 		"description": "Fjord valley backed by the Lyngen Alps. Rain shadow means less cloud cover.",
 		"lightPollution": "low",
 		"access": "1.5h drive from Tromsø"
@@ -165,7 +165,7 @@
 		"id": "hella-kvaloya",
 		"name": "Hella, Kvaløya",
 		"lat": 69.6833,
-		"lon": 18.6500,
+		"lon": 18.65,
 		"description": "Quiet area on Kvaløya's southwest coast with good northern exposure.",
 		"lightPollution": "low",
 		"access": "30 min drive from Tromsø"
@@ -174,7 +174,7 @@
 		"id": "strand",
 		"name": "Strand",
 		"lat": 69.7167,
-		"lon": 18.9000,
+		"lon": 18.9,
 		"description": "Mainland area north of Tromsø bridge. Mountain backdrop blocks some city light.",
 		"lightPollution": "medium",
 		"access": "15 min drive from Tromsø center"

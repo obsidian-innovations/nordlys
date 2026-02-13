@@ -8,7 +8,20 @@ export interface SolarWind {
 	time: Date;
 	bz: number; // nT, negative = southward (good for aurora)
 	bt: number; // nT, total field
-	speed?: number;
+	speed?: number; // km/s
+	density?: number; // protons/cm³
+}
+
+export interface HemisphericPower {
+	time: Date;
+	power: number; // GW, typically 5-200+
+	hemisphere: 'North' | 'South';
+}
+
+export interface GeomagneticStormLevel {
+	scale: number; // 0-5 (G0-G5)
+	text: string; // 'none', 'minor', 'moderate', 'strong', 'severe', 'extreme'
+	timestamp: Date;
 }
 
 export interface WeatherPoint {
@@ -28,6 +41,8 @@ export interface AuroraScore {
 	cloudPenalty: number;
 	darknessGate: boolean; // true = dark enough
 	solarWindBonus: number;
+	speedBonus: number;
+	hemisphericPowerBonus: number;
 	kp: number;
 	cloudCover: number;
 	timestamp: Date;

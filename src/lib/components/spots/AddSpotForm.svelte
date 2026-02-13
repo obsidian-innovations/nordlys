@@ -35,7 +35,10 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit} class="flex flex-col gap-4 rounded-xl border border-night-700 bg-night-800 p-4">
+<form
+	onsubmit={handleSubmit}
+	class="flex flex-col gap-4 rounded-xl border border-night-700 bg-night-800 p-4"
+>
 	<h3 class="font-semibold text-snow-50">Add Viewing Spot</h3>
 
 	<div>

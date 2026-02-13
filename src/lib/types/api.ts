@@ -7,6 +7,49 @@ export type NoaaKpForecastRow = [string, string, string, string];
 /** NOAA Solar Wind Mag — each row: [time_tag, bx_gsm, by_gsm, bz_gsm, lon_gsm, lat_gsm, bt] */
 export type NoaaSolarWindRow = [string, string, string, string, string, string, string];
 
+/** NOAA Solar Wind Plasma — each row: [time_tag, density, speed, temperature] */
+export type NoaaSolarWindPlasmaRow = [string, string, string, string];
+
+/** NOAA Hemispheric Power — JSON array of observation objects */
+export interface NoaaHemisphericPowerEntry {
+	'Observation Time': string;
+	'Data Format': string;
+	Hemisphere: 'North' | 'South';
+	'Estimated Power': number;
+}
+
+/** NOAA 1-minute estimated Kp — JSON array of observation objects */
+export interface NoaaKp1MinEntry {
+	time_tag: string;
+	estimated_kp: number;
+	kp: number;
+}
+
+/** NOAA Propagated Solar Wind — array-of-arrays with header row */
+export type NoaaPropagatedSolarWindRow = [
+	string, // time_tag
+	string, // speed
+	string, // density
+	string, // temperature
+	string, // bx
+	string, // by
+	string, // bz
+	string // bt
+];
+
+/** NOAA Space Weather Scales — current conditions */
+export interface NoaaScalesResponse {
+	[index: string]: NoaaScalesEntry;
+}
+
+export interface NoaaScalesEntry {
+	DateStamp: string;
+	TimeStamp: string;
+	R: { Scale: string; Text: string };
+	S: { Scale: string; Text: string };
+	G: { Scale: string; Text: string };
+}
+
 /** NOAA Aurora Ovation response */
 export interface NoaaOvationResponse {
 	Forecast_Time: string;

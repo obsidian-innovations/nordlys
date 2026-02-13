@@ -20,48 +20,47 @@
 					'interpolate',
 					['linear'],
 					['get', 'probability'],
-					0, 0,
-					5, 0.3,
-					15, 0.6,
-					30, 0.8,
-					100, 1
+					0,
+					0,
+					5,
+					0.3,
+					15,
+					0.6,
+					30,
+					0.8,
+					100,
+					1
 				],
 				'heatmap-color': [
 					'interpolate',
 					['linear'],
 					['heatmap-density'],
-					0, 'transparent',
-					0.15, '#00bfa5',
-					0.35, '#00e676',
-					0.6, '#b388ff',
-					1, '#f06292'
+					0,
+					'transparent',
+					0.15,
+					'#00bfa5',
+					0.35,
+					'#00e676',
+					0.6,
+					'#b388ff',
+					1,
+					'#f06292'
 				],
-				'heatmap-intensity': [
-					'interpolate',
-					['linear'],
-					['zoom'],
-					0, 0.5,
-					4, 1,
-					8, 2,
-					12, 3
-				],
+				'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, 0.5, 4, 1, 8, 2, 12, 3],
 				'heatmap-radius': [
 					'interpolate',
 					['exponential', 2],
 					['zoom'],
-					0, 20,
-					3, 60,
-					6, 150,
-					9, 400
+					0,
+					20,
+					3,
+					60,
+					6,
+					150,
+					9,
+					400
 				],
-				'heatmap-opacity': [
-					'interpolate',
-					['linear'],
-					['zoom'],
-					0, 0.8,
-					9, 0.6,
-					14, 0.2
-				]
+				'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.8, 9, 0.6, 14, 0.2]
 			}}
 		/>
 	</GeoJSONSource>

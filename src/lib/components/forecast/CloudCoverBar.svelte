@@ -9,9 +9,7 @@
 	let { weather }: Props = $props();
 
 	// Show next 12 hours of weather
-	const upcoming = $derived(
-		weather.filter((w) => w.time > new Date()).slice(0, 12)
-	);
+	const upcoming = $derived(weather.filter((w) => w.time > new Date()).slice(0, 12));
 
 	const currentCloud = $derived(
 		weather.length > 0

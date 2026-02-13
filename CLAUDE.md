@@ -21,6 +21,7 @@ Nordlys is an aurora borealis tracker PWA for Tromsø, Norway. It's a SvelteKit 
 **SPA with static adapter** — SSR is disabled (`src/routes/+layout.ts` sets `ssr = false`). Built with `@sveltejs/adapter-static`, fallback to `200.html`. Deployed to GitHub Pages at `/nordlys` base path (dev uses `/`).
 
 **Data flow:**
+
 1. **Services** (`src/lib/services/`) fetch from external APIs — `noaa.ts` (KP index, solar wind, ovation), `met-norway.ts` (weather forecast), `geolocation.ts` (browser position)
 2. **Forecast store** (`src/lib/stores/forecast.svelte.ts`) orchestrates fetches via `Promise.allSettled`, updates Svelte 5 `$state` runes, and calls `calculateAuroraScore()` to produce the composite score
 3. **Components** read from the store and render cards/gauges
@@ -34,7 +35,7 @@ Nordlys is an aurora borealis tracker PWA for Tromsø, Norway. It's a SvelteKit 
 ## Key Conventions
 
 - **Svelte 5** — uses `$state`, `$props`, `$derived` runes (not legacy stores/reactivity)
-- **Tailwind CSS v4** — custom theme tokens defined in `src/app.css` under `@theme` (aurora-*, night-*, snow-*, score-*)
+- **Tailwind CSS v4** — custom theme tokens defined in `src/app.css` under `@theme` (aurora-_, night-_, snow-_, score-_)
 - **TypeScript strict mode** — API response types in `src/lib/types/api.ts`, domain types in `src/lib/types/domain.ts`
 - **Prettier** — tabs, single quotes, no trailing commas, 100 char width, svelte parser
 - **Stores expose getter functions** — pattern is `getForecastStore()` / `getSettingsStore()` / `getSpotsStore()` returning objects with reactive getters

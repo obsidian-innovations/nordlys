@@ -50,7 +50,9 @@
 	{#if pullDistance > 0 || refreshing}
 		<div
 			class="flex items-center justify-center py-2 text-xs text-snow-300 transition-all"
-			style="height: {refreshing ? 40 : pullDistance}px; opacity: {refreshing ? 1 : pullDistance / THRESHOLD}"
+			style="height: {refreshing ? 40 : pullDistance}px; opacity: {refreshing
+				? 1
+				: pullDistance / THRESHOLD}"
 		>
 			{#if refreshing}
 				<span class="animate-spin">↻</span>

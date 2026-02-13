@@ -42,9 +42,19 @@
 				<div class="text-aurora-pink">{score.cloudPenalty} pts</div>
 			</div>
 			<div class="rounded-lg bg-night-700 p-2">
-				<div class="text-snow-300">Solar Wind</div>
-				<div class="text-lg font-semibold text-snow-50">Bz</div>
+				<div class="text-snow-300">Solar Wind Bz</div>
+				<div class="text-lg font-semibold text-snow-50">IMF</div>
 				<div class="text-aurora-purple">+{score.solarWindBonus} pts</div>
+			</div>
+			<div class="rounded-lg bg-night-700 p-2">
+				<div class="text-snow-300">Wind Speed</div>
+				<div class="text-lg font-semibold text-snow-50">km/s</div>
+				<div class="text-aurora-purple">+{score.speedBonus} pts</div>
+			</div>
+			<div class="rounded-lg bg-night-700 p-2">
+				<div class="text-snow-300">Hem. Power</div>
+				<div class="text-lg font-semibold text-snow-50">GW</div>
+				<div class="text-aurora-green">+{score.hemisphericPowerBonus} pts</div>
 			</div>
 		</div>
 	</div>

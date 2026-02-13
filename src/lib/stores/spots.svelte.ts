@@ -8,9 +8,15 @@ let curatedSpots = $state<ViewingSpot[]>([]);
 
 export function getSpotsStore() {
 	return {
-		get curated() { return curatedSpots; },
-		get userAdded() { return userSpots.current; },
-		get all() { return [...curatedSpots, ...userSpots.current]; },
+		get curated() {
+			return curatedSpots;
+		},
+		get userAdded() {
+			return userSpots.current;
+		},
+		get all() {
+			return [...curatedSpots, ...userSpots.current];
+		},
 
 		async loadCurated() {
 			try {
