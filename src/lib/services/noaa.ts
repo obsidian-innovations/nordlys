@@ -2,9 +2,11 @@ import type {
 	NoaaKpRow,
 	NoaaKpForecastRow,
 	NoaaSolarWindRow,
+	NoaaSolarWindPlasmaRow,
+	NoaaHemisphericPowerEntry,
 	NoaaOvationResponse
 } from '$lib/types/api.js';
-import type { KpReading, SolarWind } from '$lib/types/domain.js';
+import type { KpReading, SolarWind, HemisphericPower } from '$lib/types/domain.js';
 
 const BASE = 'https://services.swpc.noaa.gov';
 
@@ -48,6 +50,26 @@ export async function fetchOvation(): Promise<NoaaOvationResponse> {
 	return fetchJson<NoaaOvationResponse>('/json/ovation_aurora_latest.json');
 }
 
+export async function fetchSolarWindPlasma(): Promise<SolarWind[]> {
+	const rows = await fetchJson<NoaaSolarWindPlasmaRow[]>('/products/solar-wind/plasma-1-day.json');
+	return rows.slice(1).map((row) => ({
+		time: new Date(row[0]),
+		bz: 0,
+		bt: 0,
+		speed: parseFloat(row[2]),
+		density: parseFloat(row[1])
+	}));
+}
+
+export async function fetchHemisphericPower(): Promise<HemisphericPower[]> {
+	const entries = await fetchJson<NoaaHemisphericPowerEntry[]>('/json/hemispheric_power.json');
+	return entries.map((entry) => ({
+		time: new Date(entry['Observation Time']),
+		power: entry['Estimated Power'],
+		hemisphere: entry.Hemisphere
+	}));
+}
+
 /** Get the most recent observed KP value */
 export function latestKp(readings: KpReading[]): number {
 	const observed = readings.filter((r) => r.source === 'observed');
@@ -58,4 +80,16 @@ export function latestKp(readings: KpReading[]): number {
 export function latestBz(readings: SolarWind[]): number {
 	const valid = readings.filter((r) => !isNaN(r.bz));
 	return valid.length > 0 ? valid[valid.length - 1].bz : 0;
+}
+
+/** Get the most recent solar wind speed (km/s) */
+export function latestSpeed(readings: SolarWind[]): number {
+	const valid = readings.filter((r) => r.speed != null && !isNaN(r.speed));
+	return valid.length > 0 ? valid[valid.length - 1].speed! : 0;
+}
+
+/** Get the most recent northern hemisphere power (GW) */
+export function latestHemisphericPower(readings: HemisphericPower[]): number {
+	const north = readings.filter((r) => r.hemisphere === 'North');
+	return north.length > 0 ? north[north.length - 1].power : 0;
 }
