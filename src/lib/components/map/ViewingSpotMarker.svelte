@@ -19,7 +19,9 @@
 	{#snippet content()}
 		<div class="group cursor-pointer">
 			<div
-				class="h-3 w-3 rounded-full border-2 border-night-900 {lightColor[spot.lightPollution]} shadow-lg transition-transform group-hover:scale-150"
+				class="h-3 w-3 rounded-full border-2 border-night-900 {lightColor[
+					spot.lightPollution
+				]} shadow-lg transition-transform group-hover:scale-150"
 			></div>
 		</div>
 	{/snippet}

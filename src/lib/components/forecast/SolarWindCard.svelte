@@ -7,13 +7,9 @@
 
 	let { readings }: Props = $props();
 
-	const latest = $derived(
-		readings.length > 0 ? readings[readings.length - 1] : null
-	);
+	const latest = $derived(readings.length > 0 ? readings[readings.length - 1] : null);
 
-	const bzDirection = $derived(
-		latest ? (latest.bz < 0 ? 'South ↓' : 'North ↑') : '—'
-	);
+	const bzDirection = $derived(latest ? (latest.bz < 0 ? 'South ↓' : 'North ↑') : '—');
 
 	const bzFavorable = $derived(latest ? latest.bz < -2 : false);
 </script>
@@ -25,7 +21,11 @@
 		<div class="grid grid-cols-2 gap-3">
 			<div>
 				<div class="text-xs text-snow-300">Bz</div>
-				<div class="text-xl font-bold tabular-nums {bzFavorable ? 'text-aurora-green' : 'text-snow-50'}">
+				<div
+					class="text-xl font-bold tabular-nums {bzFavorable
+						? 'text-aurora-green'
+						: 'text-snow-50'}"
+				>
 					{latest.bz.toFixed(1)} nT
 				</div>
 				<div class="text-xs {bzFavorable ? 'text-aurora-green' : 'text-snow-300'}">

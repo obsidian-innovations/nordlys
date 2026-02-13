@@ -9,9 +9,7 @@
 
 	let { readings, forecast }: Props = $props();
 
-	const currentKp = $derived(
-		readings.length > 0 ? readings[readings.length - 1].kp : null
-	);
+	const currentKp = $derived(readings.length > 0 ? readings[readings.length - 1].kp : null);
 
 	// Show last 8 readings + next 8 forecast entries
 	const recentReadings = $derived(readings.slice(-8));

@@ -16,7 +16,9 @@
 	};
 </script>
 
-<div class="rounded-xl border border-night-700 bg-night-800 p-4 transition-colors hover:border-night-600">
+<div
+	class="rounded-xl border border-night-700 bg-night-800 p-4 transition-colors hover:border-night-600"
+>
 	<div class="flex items-start justify-between">
 		<div>
 			<h3 class="font-semibold text-snow-50">{spot.name}</h3>
@@ -24,9 +26,21 @@
 		</div>
 
 		{#if ontogglefavorite}
-			<button onclick={ontogglefavorite} aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'} class="ml-2 p-1 text-snow-300 hover:text-aurora-green">
-				<svg class="h-5 w-5" viewBox="0 0 24 24" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="2">
-					<path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+			<button
+				onclick={ontogglefavorite}
+				aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+				class="ml-2 p-1 text-snow-300 hover:text-aurora-green"
+			>
+				<svg
+					class="h-5 w-5"
+					viewBox="0 0 24 24"
+					fill={isFavorite ? 'currentColor' : 'none'}
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path
+						d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+					/>
 				</svg>
 			</button>
 		{/if}

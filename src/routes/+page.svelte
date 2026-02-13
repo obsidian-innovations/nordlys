@@ -36,9 +36,7 @@
 		<SolarWindCard readings={forecast.solarWind} />
 
 		{#if !forecast.score && !forecast.loading}
-			<div class="py-8 text-center text-sm text-snow-300">
-				Pull down to load aurora data
-			</div>
+			<div class="py-8 text-center text-sm text-snow-300">Pull down to load aurora data</div>
 		{/if}
 	</div>
 </PullToRefresh>

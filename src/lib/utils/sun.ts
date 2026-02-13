@@ -19,8 +19,7 @@ export function getSolarElevation(time: Date, lat: number, lon: number): number 
 	const haRad = toRad(hourAngle);
 
 	const sinElev =
-		Math.sin(latRad) * Math.sin(decRad) +
-		Math.cos(latRad) * Math.cos(decRad) * Math.cos(haRad);
+		Math.sin(latRad) * Math.sin(decRad) + Math.cos(latRad) * Math.cos(decRad) * Math.cos(haRad);
 
 	return toDeg(Math.asin(Math.max(-1, Math.min(1, sinElev))));
 }
