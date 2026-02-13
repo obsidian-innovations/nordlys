@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { latestKp, latestBz, latestSpeed, latestHemisphericPower } from '$lib/services/noaa.js';
+import {
+	latestKp,
+	latestBz,
+	latestSpeed,
+	latestHemisphericPower,
+	latestKp1Min
+} from '$lib/services/noaa.js';
 import type { KpReading, SolarWind, HemisphericPower } from '$lib/types/domain.js';
 
 describe('latestKp', () => {
@@ -122,5 +128,28 @@ describe('latestHemisphericPower', () => {
 			{ time: new Date('2025-01-01T03:00Z'), power: 70, hemisphere: 'South' }
 		];
 		expect(latestHemisphericPower(readings)).toBe(55);
+	});
+});
+
+describe('latestKp1Min', () => {
+	it('returns 0 for empty array', () => {
+		expect(latestKp1Min([])).toBe(0);
+	});
+
+	it('returns the last Kp value regardless of source', () => {
+		const readings: KpReading[] = [
+			{ time: new Date('2025-01-01T00:00Z'), kp: 2.3, source: 'estimated' },
+			{ time: new Date('2025-01-01T00:01Z'), kp: 3.1, source: 'estimated' },
+			{ time: new Date('2025-01-01T00:02Z'), kp: 4.7, source: 'estimated' }
+		];
+		expect(latestKp1Min(readings)).toBe(4.7);
+	});
+
+	it('returns last entry even if mixed sources', () => {
+		const readings: KpReading[] = [
+			{ time: new Date('2025-01-01T00:00Z'), kp: 5, source: 'observed' },
+			{ time: new Date('2025-01-01T00:01Z'), kp: 6.2, source: 'estimated' }
+		];
+		expect(latestKp1Min(readings)).toBe(6.2);
 	});
 });

@@ -5,7 +5,11 @@ import {
 	fetchSolarWindPlasma,
 	fetchHemisphericPower,
 	fetchOvation,
+	fetchKp1Minute,
+	fetchPropagatedSolarWind,
+	fetchNoaaScales,
 	latestKp,
+	latestKp1Min,
 	latestBz,
 	latestSpeed,
 	latestHemisphericPower
@@ -17,7 +21,8 @@ import type {
 	SolarWind,
 	WeatherPoint,
 	AuroraScore,
-	HemisphericPower
+	HemisphericPower,
+	GeomagneticStormLevel
 } from '$lib/types/domain.js';
 import type { NoaaOvationResponse } from '$lib/types/api.js';
 
@@ -26,20 +31,31 @@ const TROMSO_LON = 18.9553;
 
 let kpReadings = $state<KpReading[]>([]);
 let kpForecast = $state<KpReading[]>([]);
+let kp1Minute = $state<KpReading[]>([]);
 let solarWind = $state<SolarWind[]>([]);
 let solarWindPlasma = $state<SolarWind[]>([]);
+let propagatedSolarWind = $state<SolarWind[]>([]);
 let hemisphericPower = $state<HemisphericPower[]>([]);
 let weather = $state<WeatherPoint[]>([]);
 let score = $state<AuroraScore | null>(null);
 let ovation = $state<NoaaOvationResponse | null>(null);
+let stormLevel = $state<GeomagneticStormLevel | null>(null);
 let loading = $state(false);
 let lastUpdated = $state<Date | null>(null);
 let error = $state<string | null>(null);
 
 function recalculateScore() {
-	const kp = latestKp(kpReadings);
-	const bz = latestBz(solarWind);
-	const speed = latestSpeed(solarWindPlasma);
+	// Prefer 1-minute Kp over 3-hourly observed Kp (much more responsive)
+	const kp1m = latestKp1Min(kp1Minute);
+	const kp = kp1m > 0 ? kp1m : latestKp(kpReadings);
+
+	// Prefer propagated solar wind (at magnetopause) over raw L1 data
+	const propagatedBz = latestBz(propagatedSolarWind);
+	const bz = propagatedBz !== 0 ? propagatedBz : latestBz(solarWind);
+
+	const propagatedSpeed = latestSpeed(propagatedSolarWind);
+	const speed = propagatedSpeed > 0 ? propagatedSpeed : latestSpeed(solarWindPlasma);
+
 	const hp = latestHemisphericPower(hemisphericPower);
 	const now = new Date();
 	const wx = weatherAt(weather, now);
@@ -60,7 +76,10 @@ async function refresh() {
 			fetchWeather(TROMSO_LAT, TROMSO_LON),
 			fetchOvation(),
 			fetchSolarWindPlasma(),
-			fetchHemisphericPower()
+			fetchHemisphericPower(),
+			fetchKp1Minute(),
+			fetchPropagatedSolarWind(),
+			fetchNoaaScales()
 		]);
 
 		if (results[0].status === 'fulfilled') kpReadings = results[0].value;
@@ -70,6 +89,9 @@ async function refresh() {
 		if (results[4].status === 'fulfilled') ovation = results[4].value;
 		if (results[5].status === 'fulfilled') solarWindPlasma = results[5].value;
 		if (results[6].status === 'fulfilled') hemisphericPower = results[6].value;
+		if (results[7].status === 'fulfilled') kp1Minute = results[7].value;
+		if (results[8].status === 'fulfilled') propagatedSolarWind = results[8].value;
+		if (results[9].status === 'fulfilled') stormLevel = results[9].value;
 
 		const sourceNames = [
 			'Kp index',
@@ -78,7 +100,10 @@ async function refresh() {
 			'weather',
 			'ovation',
 			'solar wind plasma',
-			'hemispheric power'
+			'hemispheric power',
+			'Kp 1-minute',
+			'propagated solar wind',
+			'storm scales'
 		];
 		const failedNames = results
 			.map((r, i) => (r.status === 'rejected' ? sourceNames[i] : null))
@@ -106,11 +131,17 @@ export function getForecastStore() {
 		get kpForecast() {
 			return kpForecast;
 		},
+		get kp1Minute() {
+			return kp1Minute;
+		},
 		get solarWind() {
 			return solarWind;
 		},
 		get solarWindPlasma() {
 			return solarWindPlasma;
+		},
+		get propagatedSolarWind() {
+			return propagatedSolarWind;
 		},
 		get hemisphericPower() {
 			return hemisphericPower;
@@ -132,6 +163,9 @@ export function getForecastStore() {
 		},
 		get ovation() {
 			return ovation;
+		},
+		get stormLevel() {
+			return stormLevel;
 		},
 		refresh
 	};

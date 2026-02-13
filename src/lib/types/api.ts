@@ -18,6 +18,38 @@ export interface NoaaHemisphericPowerEntry {
 	'Estimated Power': number;
 }
 
+/** NOAA 1-minute estimated Kp — JSON array of observation objects */
+export interface NoaaKp1MinEntry {
+	time_tag: string;
+	estimated_kp: number;
+	kp: number;
+}
+
+/** NOAA Propagated Solar Wind — array-of-arrays with header row */
+export type NoaaPropagatedSolarWindRow = [
+	string, // time_tag
+	string, // speed
+	string, // density
+	string, // temperature
+	string, // bx
+	string, // by
+	string, // bz
+	string // bt
+];
+
+/** NOAA Space Weather Scales — current conditions */
+export interface NoaaScalesResponse {
+	[index: string]: NoaaScalesEntry;
+}
+
+export interface NoaaScalesEntry {
+	DateStamp: string;
+	TimeStamp: string;
+	R: { Scale: string; Text: string };
+	S: { Scale: string; Text: string };
+	G: { Scale: string; Text: string };
+}
+
 /** NOAA Aurora Ovation response */
 export interface NoaaOvationResponse {
 	Forecast_Time: string;

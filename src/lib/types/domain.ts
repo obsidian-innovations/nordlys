@@ -18,6 +18,12 @@ export interface HemisphericPower {
 	hemisphere: 'North' | 'South';
 }
 
+export interface GeomagneticStormLevel {
+	scale: number; // 0-5 (G0-G5)
+	text: string; // 'none', 'minor', 'moderate', 'strong', 'severe', 'extreme'
+	timestamp: Date;
+}
+
 export interface WeatherPoint {
 	time: Date;
 	cloudCover: number; // 0-100%

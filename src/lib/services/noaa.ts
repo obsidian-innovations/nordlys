@@ -4,9 +4,17 @@ import type {
 	NoaaSolarWindRow,
 	NoaaSolarWindPlasmaRow,
 	NoaaHemisphericPowerEntry,
-	NoaaOvationResponse
+	NoaaOvationResponse,
+	NoaaKp1MinEntry,
+	NoaaPropagatedSolarWindRow,
+	NoaaScalesResponse
 } from '$lib/types/api.js';
-import type { KpReading, SolarWind, HemisphericPower } from '$lib/types/domain.js';
+import type {
+	KpReading,
+	SolarWind,
+	HemisphericPower,
+	GeomagneticStormLevel
+} from '$lib/types/domain.js';
 
 const BASE = 'https://services.swpc.noaa.gov';
 
@@ -70,6 +78,40 @@ export async function fetchHemisphericPower(): Promise<HemisphericPower[]> {
 	}));
 }
 
+export async function fetchKp1Minute(): Promise<KpReading[]> {
+	const entries = await fetchJson<NoaaKp1MinEntry[]>('/json/planetary_k_index_1m.json');
+	return entries.map((entry) => ({
+		time: new Date(entry.time_tag),
+		kp: entry.estimated_kp,
+		source: 'estimated' as const
+	}));
+}
+
+export async function fetchPropagatedSolarWind(): Promise<SolarWind[]> {
+	const rows = await fetchJson<NoaaPropagatedSolarWindRow[]>(
+		'/products/geospace/propagated-solar-wind-1-hour.json'
+	);
+	return rows.slice(1).map((row) => ({
+		time: new Date(row[0]),
+		bz: parseFloat(row[6]),
+		bt: parseFloat(row[7]),
+		speed: parseFloat(row[1]),
+		density: parseFloat(row[2])
+	}));
+}
+
+export async function fetchNoaaScales(): Promise<GeomagneticStormLevel> {
+	const data = await fetchJson<NoaaScalesResponse>('/products/noaa-scales.json');
+	// Entry "0" is the most recent
+	const latest = data['0'];
+	const scale = parseInt(latest.G.Scale, 10) || 0;
+	return {
+		scale,
+		text: latest.G.Text,
+		timestamp: new Date(`${latest.DateStamp} ${latest.TimeStamp}`)
+	};
+}
+
 /** Get the most recent observed KP value */
 export function latestKp(readings: KpReading[]): number {
 	const observed = readings.filter((r) => r.source === 'observed');
@@ -92,4 +134,9 @@ export function latestSpeed(readings: SolarWind[]): number {
 export function latestHemisphericPower(readings: HemisphericPower[]): number {
 	const north = readings.filter((r) => r.hemisphere === 'North');
 	return north.length > 0 ? north[north.length - 1].power : 0;
+}
+
+/** Get the most recent 1-minute estimated Kp, preferring it over 3-hourly */
+export function latestKp1Min(readings: KpReading[]): number {
+	return readings.length > 0 ? readings[readings.length - 1].kp : 0;
 }
