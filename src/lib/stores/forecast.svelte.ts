@@ -45,21 +45,29 @@ let lastUpdated = $state<Date | null>(null);
 let error = $state<string | null>(null);
 
 function recalculateScore() {
-	// Prefer 1-minute Kp over 3-hourly observed Kp (much more responsive)
+	// Prefer 1-minute Kp over 3-hourly observed Kp (much more responsive).
+	// Use the higher of the two sources — the 1-minute feed can temporarily lag
+	// behind the 3-hourly observed value during fast-changing conditions.
 	const kp1m = latestKp1Min(kp1Minute);
-	const kp = kp1m > 0 ? kp1m : latestKp(kpReadings);
+	const kp3h = latestKp(kpReadings);
+	const kp = Math.max(kp1m, kp3h);
 
-	// Prefer propagated solar wind (at magnetopause) over raw L1 data
+	// Prefer propagated solar wind (at magnetopause) over raw L1 data.
+	// Fall back to raw L1 if propagated data is unavailable (returns 0).
 	const propagatedBz = latestBz(propagatedSolarWind);
-	const bz = propagatedBz !== 0 ? propagatedBz : latestBz(solarWind);
+	const rawBz = latestBz(solarWind);
+	const bz = propagatedBz !== 0 ? propagatedBz : rawBz;
 
 	const propagatedSpeed = latestSpeed(propagatedSolarWind);
-	const speed = propagatedSpeed > 0 ? propagatedSpeed : latestSpeed(solarWindPlasma);
+	const rawSpeed = latestSpeed(solarWindPlasma);
+	const speed = propagatedSpeed > 0 ? propagatedSpeed : rawSpeed;
 
 	const hp = latestHemisphericPower(hemisphericPower);
 	const now = new Date();
 	const wx = weatherAt(weather, now);
-	const cloudCover = wx?.cloudCover ?? 50;
+	// Default to 0% cloud cover when weather data is unavailable —
+	// penalizing with 50% when we simply have no data led to false 0 scores
+	const cloudCover = wx?.cloudCover ?? 0;
 
 	score = calculateAuroraScore(kp, cloudCover, bz, now, TROMSO_LAT, TROMSO_LON, speed, hp);
 }
