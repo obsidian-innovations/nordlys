@@ -1,12 +1,7 @@
 import type {
-	NoaaKpRow,
-	NoaaKpForecastRow,
-	NoaaSolarWindRow,
-	NoaaSolarWindPlasmaRow,
 	NoaaHemisphericPowerEntry,
 	NoaaOvationResponse,
 	NoaaKp1MinEntry,
-	NoaaPropagatedSolarWindRow,
 	NoaaScalesResponse
 } from '$lib/types/api.js';
 import type {
@@ -18,6 +13,33 @@ import type {
 
 const BASE = 'https://services.swpc.noaa.gov';
 
+/** NOAA uses -999.9 (and similar) as sentinel for missing data */
+function isSentinel(v: number): boolean {
+	return v <= -999;
+}
+
+/** Parse a float, returning NaN for sentinel values */
+function parseVal(s: string): number {
+	const v = parseFloat(s);
+	if (isNaN(v) || isSentinel(v)) return NaN;
+	return v;
+}
+
+/**
+ * Build a column-index lookup from the header row of an array-of-arrays NOAA response.
+ * Returns a function that retrieves a column value by name.
+ */
+function columnLookup(header: string[]): (row: string[], name: string) => string {
+	const idx = new Map<string, number>();
+	for (let i = 0; i < header.length; i++) {
+		idx.set(header[i].toLowerCase().trim(), i);
+	}
+	return (row, name) => {
+		const i = idx.get(name.toLowerCase());
+		return i != null && i < row.length ? row[i] : '';
+	};
+}
+
 async function fetchJson<T>(path: string): Promise<T> {
 	const res = await fetch(`${BASE}${path}`);
 	if (!res.ok) throw new Error(`NOAA API error: ${res.status} ${res.statusText}`);
@@ -25,32 +47,35 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 export async function fetchKpIndex(): Promise<KpReading[]> {
-	const rows = await fetchJson<NoaaKpRow[]>('/products/noaa-planetary-k-index.json');
-	// First row is header
+	const rows = await fetchJson<string[][]>('/products/noaa-planetary-k-index.json');
+	if (rows.length < 2) return [];
+	const col = columnLookup(rows[0]);
 	return rows.slice(1).map((row) => ({
-		time: new Date(row[0]),
-		kp: parseFloat(row[1]),
+		time: new Date(col(row, 'time_tag')),
+		kp: parseVal(col(row, 'kp')),
 		source: 'observed' as const
 	}));
 }
 
 export async function fetchKpForecast(): Promise<KpReading[]> {
-	const rows = await fetchJson<NoaaKpForecastRow[]>(
-		'/products/noaa-planetary-k-index-forecast.json'
-	);
+	const rows = await fetchJson<string[][]>('/products/noaa-planetary-k-index-forecast.json');
+	if (rows.length < 2) return [];
+	const col = columnLookup(rows[0]);
 	return rows.slice(1).map((row) => ({
-		time: new Date(row[0]),
-		kp: parseFloat(row[1]),
-		source: row[2] as KpReading['source']
+		time: new Date(col(row, 'time_tag')),
+		kp: parseVal(col(row, 'kp')),
+		source: col(row, 'observed') as KpReading['source']
 	}));
 }
 
 export async function fetchSolarWind(): Promise<SolarWind[]> {
-	const rows = await fetchJson<NoaaSolarWindRow[]>('/products/solar-wind/mag-1-day.json');
+	const rows = await fetchJson<string[][]>('/products/solar-wind/mag-1-day.json');
+	if (rows.length < 2) return [];
+	const col = columnLookup(rows[0]);
 	return rows.slice(1).map((row) => ({
-		time: new Date(row[0]),
-		bz: parseFloat(row[3]),
-		bt: parseFloat(row[6])
+		time: new Date(col(row, 'time_tag')),
+		bz: parseVal(col(row, 'bz_gsm')),
+		bt: parseVal(col(row, 'bt'))
 	}));
 }
 
@@ -59,13 +84,15 @@ export async function fetchOvation(): Promise<NoaaOvationResponse> {
 }
 
 export async function fetchSolarWindPlasma(): Promise<SolarWind[]> {
-	const rows = await fetchJson<NoaaSolarWindPlasmaRow[]>('/products/solar-wind/plasma-1-day.json');
+	const rows = await fetchJson<string[][]>('/products/solar-wind/plasma-1-day.json');
+	if (rows.length < 2) return [];
+	const col = columnLookup(rows[0]);
 	return rows.slice(1).map((row) => ({
-		time: new Date(row[0]),
+		time: new Date(col(row, 'time_tag')),
 		bz: 0,
 		bt: 0,
-		speed: parseFloat(row[2]),
-		density: parseFloat(row[1])
+		speed: parseVal(col(row, 'speed')),
+		density: parseVal(col(row, 'density'))
 	}));
 }
 
@@ -88,15 +115,15 @@ export async function fetchKp1Minute(): Promise<KpReading[]> {
 }
 
 export async function fetchPropagatedSolarWind(): Promise<SolarWind[]> {
-	const rows = await fetchJson<NoaaPropagatedSolarWindRow[]>(
-		'/products/geospace/propagated-solar-wind-1-hour.json'
-	);
+	const rows = await fetchJson<string[][]>('/products/geospace/propagated-solar-wind-1-hour.json');
+	if (rows.length < 2) return [];
+	const col = columnLookup(rows[0]);
 	return rows.slice(1).map((row) => ({
-		time: new Date(row[0]),
-		bz: parseFloat(row[6]),
-		bt: parseFloat(row[7]),
-		speed: parseFloat(row[1]),
-		density: parseFloat(row[2])
+		time: new Date(col(row, 'time_tag')),
+		bz: parseVal(col(row, 'bz')),
+		bt: parseVal(col(row, 'bt')),
+		speed: parseVal(col(row, 'speed')),
+		density: parseVal(col(row, 'density'))
 	}));
 }
 
@@ -112,31 +139,34 @@ export async function fetchNoaaScales(): Promise<GeomagneticStormLevel> {
 	};
 }
 
-/** Get the most recent observed KP value */
+/** Get the most recent observed KP value, filtering NaN */
 export function latestKp(readings: KpReading[]): number {
-	const observed = readings.filter((r) => r.source === 'observed');
+	const observed = readings.filter((r) => r.source === 'observed' && !isNaN(r.kp));
 	return observed.length > 0 ? observed[observed.length - 1].kp : 0;
 }
 
-/** Get the most recent solar wind Bz value */
+/** Get the most recent solar wind Bz value, filtering NaN and sentinel */
 export function latestBz(readings: SolarWind[]): number {
-	const valid = readings.filter((r) => !isNaN(r.bz));
+	const valid = readings.filter((r) => !isNaN(r.bz) && !isSentinel(r.bz));
 	return valid.length > 0 ? valid[valid.length - 1].bz : 0;
 }
 
-/** Get the most recent solar wind speed (km/s) */
+/** Get the most recent solar wind speed (km/s), filtering NaN and sentinel */
 export function latestSpeed(readings: SolarWind[]): number {
-	const valid = readings.filter((r) => r.speed != null && !isNaN(r.speed));
+	const valid = readings.filter((r) => r.speed != null && !isNaN(r.speed) && !isSentinel(r.speed));
 	return valid.length > 0 ? valid[valid.length - 1].speed! : 0;
 }
 
 /** Get the most recent northern hemisphere power (GW) */
 export function latestHemisphericPower(readings: HemisphericPower[]): number {
-	const north = readings.filter((r) => r.hemisphere === 'North');
+	const north = readings.filter(
+		(r) => r.hemisphere === 'North' && !isNaN(r.power) && !isSentinel(r.power)
+	);
 	return north.length > 0 ? north[north.length - 1].power : 0;
 }
 
-/** Get the most recent 1-minute estimated Kp, preferring it over 3-hourly */
+/** Get the most recent 1-minute estimated Kp, filtering NaN */
 export function latestKp1Min(readings: KpReading[]): number {
-	return readings.length > 0 ? readings[readings.length - 1].kp : 0;
+	const valid = readings.filter((r) => !isNaN(r.kp));
+	return valid.length > 0 ? valid[valid.length - 1].kp : 0;
 }

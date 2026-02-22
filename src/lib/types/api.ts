@@ -1,15 +1,3 @@
-/** NOAA SWPC KP Index — each row: [time_tag, Kp, Kp_fraction, a_running, station_count] */
-export type NoaaKpRow = [string, string, string, string, string];
-
-/** NOAA KP Forecast — each row: [time_tag, Kp, observed/estimated/predicted, noaa_scale] */
-export type NoaaKpForecastRow = [string, string, string, string];
-
-/** NOAA Solar Wind Mag — each row: [time_tag, bx_gsm, by_gsm, bz_gsm, lon_gsm, lat_gsm, bt] */
-export type NoaaSolarWindRow = [string, string, string, string, string, string, string];
-
-/** NOAA Solar Wind Plasma — each row: [time_tag, density, speed, temperature] */
-export type NoaaSolarWindPlasmaRow = [string, string, string, string];
-
 /** NOAA Hemispheric Power — JSON array of observation objects */
 export interface NoaaHemisphericPowerEntry {
 	'Observation Time': string;
@@ -24,18 +12,6 @@ export interface NoaaKp1MinEntry {
 	estimated_kp: number;
 	kp: number;
 }
-
-/** NOAA Propagated Solar Wind — array-of-arrays with header row */
-export type NoaaPropagatedSolarWindRow = [
-	string, // time_tag
-	string, // speed
-	string, // density
-	string, // temperature
-	string, // bx
-	string, // by
-	string, // bz
-	string // bt
-];
 
 /** NOAA Space Weather Scales — current conditions */
 export interface NoaaScalesResponse {
